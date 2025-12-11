@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://17r4y7m0acvc"]
+
+[ext_resource type="Texture2D" uid="uid://dpoej5ngist0m" path="res://Assets/Sprites/bread.png" id="1_36rfb"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_36rfb"]
+size = Vector2(96, 32)
+
+[node name="Block" type="StaticBody2D" groups=["Block"]]
+collision_layer = 4
+collision_mask = 2
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("1_36rfb")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_36rfb")
