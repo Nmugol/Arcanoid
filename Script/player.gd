@@ -1,17 +1,16 @@
 extends CharacterBody2D
+class_name Player
 
-@export_category("player settings")
-@export var speed: float = 5.0
+@export var speed: float = 600.0
 
-const ACCELERATIONS: float = 100
-
-func _physics_process(delta: float) -> void:
-
-	if Input.is_action_pressed("move_left"):
-		velocity.x += -(speed*ACCELERATIONS) * delta
-
-	if Input.is_action_pressed("move_right"):
-		velocity.x += (speed*ACCELERATIONS) * delta
-
-	velocity.y = 0
+func _physics_process(_delta: float) -> void:
+	if State.game_state != State.GameStates.RUN: return
+	
+	velocity.x = 0
+	
+	if Input.is_action_pressed("ui_left"):
+		velocity.x = -speed
+	if Input.is_action_pressed("ui_right"):
+		velocity.x = speed
+		
 	move_and_slide()

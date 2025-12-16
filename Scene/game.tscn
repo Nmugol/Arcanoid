@@ -1,27 +1,253 @@
-[gd_scene load_steps=4 format=3 uid="uid://boph8gy2hb75q"]
+[gd_scene load_steps=15 format=3 uid="uid://boph8gy2hb75q"]
 
+[ext_resource type="Script" uid="uid://umus2hdrdho6" path="res://Script/games_menager.gd" id="1_03iqk"]
 [ext_resource type="PackedScene" uid="uid://bsq2hwytoujw5" path="res://Scene/player.tscn" id="1_mhtsl"]
+[ext_resource type="Theme" uid="uid://dxj4afk2t3q8h" path="res://Assets/Themes/Main.tres" id="1_thj8p"]
+[ext_resource type="LabelSettings" uid="uid://clan3gvjajd0p" path="res://Assets/Themes/Label_regular.tres" id="2_h8jt7"]
+[ext_resource type="LabelSettings" uid="uid://bcxhaimr8arlt" path="res://Assets/Themes/Laber_huge.tres" id="2_sagxc"]
 [ext_resource type="PackedScene" uid="uid://dfvcdiv0lcd2y" path="res://Scene/ball.tscn" id="2_w51g1"]
+[ext_resource type="PackedScene" uid="uid://17r4y7m0acvc" path="res://Scene/block.tscn" id="3_4jv7b"]
+[ext_resource type="FontFile" uid="uid://bpcj4ktynprq4" path="res://Assets/Fonts/BoldPixels.ttf" id="3_h8jt7"]
+[ext_resource type="Shader" uid="uid://c43vjn1xqjthi" path="res://Assets/game.gdshader" id="5_8f6ah"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_sagxc"]
+font = ExtResource("3_h8jt7")
+font_size = 48
+stacked_outline_count = 1
+stacked_outline_0/size = 18
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_twwsd"]
+shader = ExtResource("5_8f6ah")
+shader_parameter/overlay = true
+shader_parameter/scanlines_opacity = 0.4
+shader_parameter/scanlines_width = 0.25
+shader_parameter/grille_opacity = 0.3
+shader_parameter/resolution = Vector2(640, 480)
+shader_parameter/pixelate = false
+shader_parameter/roll = false
+shader_parameter/roll_speed = 8.0
+shader_parameter/roll_size = 0.0
+shader_parameter/roll_variation = 0.97100004286262
+shader_parameter/distort_intensity = 0.07200000342
+shader_parameter/noise_opacity = 0.678000032205
+shader_parameter/noise_speed = 5.0
+shader_parameter/static_noise_intensity = 0.06
+shader_parameter/aberration = 4.7499999933364734e-08
+shader_parameter/brightness = 1.9649999999999999
+shader_parameter/discolor = false
+shader_parameter/warp_amount = 0.0
+shader_parameter/clip_warp = false
+shader_parameter/vignette_intensity = 0.4
+shader_parameter/vignette_opacity = 0.5
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4jv7b"]
+size = Vector2(24, 632)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_w51g1"]
-size = Vector2(1186, 17)
+size = Vector2(1040, 24)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_03iqk"]
+size = Vector2(1040, 40)
 
 [node name="Game" type="Node2D"]
 
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(576, 324)
+
 [node name="GUI" type="CanvasLayer" parent="."]
+
+[node name="GameOverScreen" type="Control" parent="GUI"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="GUI/GameOverScreen"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GUI/GameOverScreen/Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -280.0
+offset_top = -82.0
+offset_right = 280.0
+offset_bottom = 82.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GameOver" type="Label" parent="GUI/GameOverScreen/Panel/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_thj8p")
+text = "Game Over"
+label_settings = ExtResource("2_sagxc")
+horizontal_alignment = 1
+
+[node name="Label" type="Label" parent="GUI/GameOverScreen/Panel/VBoxContainer"]
+layout_mode = 2
+text = "SCORE: 123456789"
+label_settings = ExtResource("2_h8jt7")
+horizontal_alignment = 1
+
+[node name="PlayScreen" type="Control" parent="GUI"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Score" type="Label" parent="GUI/PlayScreen"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 32.0
+grow_horizontal = 2
+theme = ExtResource("1_thj8p")
+theme_override_font_sizes/font_size = 32
+text = " Score: 0"
+label_settings = ExtResource("2_h8jt7")
+vertical_alignment = 1
+
+[node name="StartScreen" type="Control" parent="GUI"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="GUI/StartScreen"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GUI/StartScreen/Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Logo" type="Label" parent="GUI/StartScreen/Panel/VBoxContainer"]
+layout_mode = 2
+text = "BREAD BREAKER"
+label_settings = ExtResource("2_sagxc")
+
+[node name="Start" type="Label" parent="GUI/StartScreen/Panel/VBoxContainer"]
+layout_mode = 2
+text = "press space to start"
+label_settings = SubResource("LabelSettings_sagxc")
+horizontal_alignment = 1
+
+[node name="CRT" type="Control" parent="GUI"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="GUI/CRT"]
+material = SubResource("ShaderMaterial_twwsd")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="Managers" type="Node2D" parent="."]
 
+[node name="GamesMenager" type="Node2D" parent="Managers" node_paths=PackedStringArray("start_screen", "points_label", "game_over_screen", "final_score", "play_screen", "block_parent", "ball_parent", "player")]
+script = ExtResource("1_03iqk")
+start_screen = NodePath("../../GUI/StartScreen")
+points_label = NodePath("../../GUI/PlayScreen/Score")
+game_over_screen = NodePath("../../GUI/GameOverScreen")
+final_score = NodePath("../../GUI/GameOverScreen/Panel/VBoxContainer/Label")
+play_screen = NodePath("../../GUI/PlayScreen")
+block_parent = NodePath("../../Bloks")
+ball_parent = NodePath("../../Balls")
+player = NodePath("../../Player")
+ball_pos = Vector2(576, 556)
+player_pos = Vector2(576, 587)
+block = ExtResource("3_4jv7b")
+ball = ExtResource("2_w51g1")
+
 [node name="Player" parent="." instance=ExtResource("1_mhtsl")]
-position = Vector2(576, 568)
+position = Vector2(576, 587)
+collision_layer = 25
+collision_mask = 27
+speed = 600.0
 
-[node name="Ball" parent="." instance=ExtResource("2_w51g1")]
-position = Vector2(576, 104)
+[node name="Walls" type="Node2D" parent="."]
+position = Vector2(42, 0)
 
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
+[node name="Left" type="StaticBody2D" parent="Walls"]
+position = Vector2(4, 326)
 collision_layer = 8
 collision_mask = 0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2(584, 592)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Left"]
+position = Vector2(0, -2)
+shape = SubResource("RectangleShape2D_4jv7b")
+
+[node name="Right" type="StaticBody2D" parent="Walls"]
+position = Vector2(1072, 320)
+collision_layer = 8
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Right"]
+position = Vector2(-4, 4)
+shape = SubResource("RectangleShape2D_4jv7b")
+
+[node name="Top" type="StaticBody2D" parent="Walls"]
+position = Vector2(583, 2)
+collision_layer = 8
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Top"]
+position = Vector2(-47, -6)
 shape = SubResource("RectangleShape2D_w51g1")
+
+[node name="Bloks" type="Node2D" parent="."]
+position = Vector2(42, 0)
+
+[node name="Balls" type="Node2D" parent="."]
+
+[node name="DeleteZone" type="Area2D" parent="." groups=["DeleteZone"]]
+position = Vector2(578, 646)
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DeleteZone"]
+position = Vector2(0, -26)
+shape = SubResource("RectangleShape2D_03iqk")
+debug_color = Color(0.9509743, 0, 0.15030894, 0.41960785)
+
+[connection signal="body_entered" from="DeleteZone" to="Managers/GamesMenager" method="_on_delete_zone_body_entered"]

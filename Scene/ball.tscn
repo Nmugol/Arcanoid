@@ -1,13 +1,17 @@
-[gd_scene load_steps=3 format=3 uid="uid://dfvcdiv0lcd2y"]
+[gd_scene load_steps=4 format=3 uid="uid://dfvcdiv0lcd2y"]
 
+[ext_resource type="Script" uid="uid://mqtva4wlrqlo" path="res://Script/ball.gd" id="1_0auh2"]
 [ext_resource type="Texture2D" uid="uid://u7673qoqw4y4" path="res://Assets/Sprites/duck.png" id="1_c2f4g"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_0wd17"]
 radius = 8.0
 
-[node name="Ball" type="RigidBody2D" groups=["Ball"]]
+[node name="Ball" type="CharacterBody2D" groups=["Ball"]]
 collision_layer = 2
-collision_mask = 5
+collision_mask = 13
+script = ExtResource("1_0auh2")
+acceleration = 50.0
+max_speed = 600.0
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

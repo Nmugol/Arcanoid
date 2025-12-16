@@ -1,13 +1,20 @@
-[gd_scene load_steps=3 format=3 uid="uid://17r4y7m0acvc"]
+[gd_scene load_steps=5 format=3 uid="uid://17r4y7m0acvc"]
 
+[ext_resource type="Script" uid="uid://bjinmi0oygdo" path="res://Script/block.gd" id="1_14ne2"]
 [ext_resource type="Texture2D" uid="uid://dpoej5ngist0m" path="res://Assets/Sprites/bread.png" id="1_36rfb"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_36rfb"]
-size = Vector2(96, 32)
+size = Vector2(91, 29)
 
-[node name="Block" type="StaticBody2D" groups=["Block"]]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_14ne2"]
+size = Vector2(93, 31)
+
+[node name="Block" type="StaticBody2D" node_paths=PackedStringArray("sprite") groups=["Block"]]
 collision_layer = 4
 collision_mask = 2
+script = ExtResource("1_14ne2")
+colors = Array[Color]([Color(1, 1, 1, 1), Color(0.65882355, 0.5058824, 0.43137255, 1), Color(0.28627452, 0.24313726, 0.10980392, 1)])
+sprite = NodePath("Sprite2D")
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
@@ -15,4 +22,17 @@ texture_filter = 1
 texture = ExtResource("1_36rfb")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-0.5, -0.5)
 shape = SubResource("RectangleShape2D_36rfb")
+
+[node name="Area2D" type="Area2D" parent="."]
+visible = false
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(-0.5, -0.5)
+shape = SubResource("RectangleShape2D_14ne2")
+debug_color = Color(0.89779085, 0.28988174, 0.33328736, 0.41960785)
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

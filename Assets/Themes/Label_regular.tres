@@ -1,0 +1,10 @@
+[gd_resource type="LabelSettings" load_steps=2 format=3 uid="uid://clan3gvjajd0p"]
+
+[ext_resource type="FontFile" uid="uid://bpcj4ktynprq4" path="res://Assets/Fonts/BoldPixels.ttf" id="1_6q0et"]
+
+[resource]
+font = ExtResource("1_6q0et")
+font_size = 32
+outline_color = Color(0, 0, 0, 1)
+stacked_outline_count = 1
+stacked_outline_0/size = 16
