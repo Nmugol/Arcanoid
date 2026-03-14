@@ -3,20 +3,33 @@
 [ext_resource type="Texture2D" uid="uid://dc6tgc88wqabb" path="res://Assets/Sprites/board.png" id="1_kelma"]
 [ext_resource type="Script" uid="uid://xdkhsjg83yka" path="res://Script/player.gd" id="1_y8w33"]
 
+<<<<<<< HEAD
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_xa75v"]
 radius = 12.0
 height = 100.0
+=======
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_y8w33"]
+radius = 8.0
+height = 130.0
+>>>>>>> branch 'main' of git@github.com:Nmugol/Arcanoid.git
 
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
+<<<<<<< HEAD
 collision_layer = 1
 collision_mask = 8
+=======
+collision_layer = 9
+collision_mask = 11
+motion_mode = 1
+>>>>>>> branch 'main' of git@github.com:Nmugol/Arcanoid.git
 script = ExtResource("1_y8w33")
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1
+scale = Vector2(2, 1)
 texture = ExtResource("1_kelma")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 rotation = 1.5707964
-shape = SubResource("CapsuleShape2D_xa75v")
+shape = SubResource("CapsuleShape2D_y8w33")

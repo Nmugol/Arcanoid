@@ -1,0 +1,6 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://dxj4afk2t3q8h"]
+
+[ext_resource type="FontFile" uid="uid://bpcj4ktynprq4" path="res://Assets/Fonts/BoldPixels.ttf" id="1_j8bwb"]
+
+[resource]
+Label/fonts/font = ExtResource("1_j8bwb")
