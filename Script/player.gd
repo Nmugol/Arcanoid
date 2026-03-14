@@ -1,17 +1,31 @@
 extends CharacterBody2D
 
-@export_category("player settings")
-@export var speed: float = 5.0
+@export var speed: float = 600.0
+@export var acceleration: float = 20.0
+@export var friction: float = 15.0
 
-const ACCELERATIONS: float = 100
+var normal_scale: Vector2
+
+func _ready() -> void:
+	normal_scale = scale
 
 func _physics_process(delta: float) -> void:
+	var direction = Input.get_axis("move_left", "move_right")
+	
+	if direction != 0:
+		velocity.x = lerp(velocity.x, direction * speed, acceleration * delta)
+	else:
+		velocity.x = lerp(velocity.x, 0.0, friction * delta)
 
-	if Input.is_action_pressed("move_left"):
-		velocity.x += -(speed*ACCELERATIONS) * delta
-
-	if Input.is_action_pressed("move_right"):
-		velocity.x += (speed*ACCELERATIONS) * delta
-
-	velocity.y = 0
 	move_and_slide()
+	
+	# Ograniczenie pozycji gracza do ekranu (zakładając 1152px szerokości)
+	var screen_size = get_viewport_rect().size
+	var half_width = 50.0 * scale.x # Przybliżona połowa szerokości
+	position.x = clamp(position.x, half_width, screen_size.x - half_width)
+
+func extend_paddle() -> void:
+	scale.x = 1.5
+	# Reset po 10 sekundach
+	await get_tree().create_timer(10.0).timeout
+	scale.x = normal_scale.x

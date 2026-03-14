@@ -1,27 +1,59 @@
-[gd_scene load_steps=4 format=3 uid="uid://boph8gy2hb75q"]
+[gd_scene format=3 uid="uid://boph8gy2hb75q"]
 
+[ext_resource type="Script" uid="uid://cw0hn4lew6ejl" path="res://Script/game.gd" id="1_game_script"]
 [ext_resource type="PackedScene" uid="uid://bsq2hwytoujw5" path="res://Scene/player.tscn" id="1_mhtsl"]
 [ext_resource type="PackedScene" uid="uid://dfvcdiv0lcd2y" path="res://Scene/ball.tscn" id="2_w51g1"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_w51g1"]
-size = Vector2(1186, 17)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_walls"]
+size = Vector2(20, 648)
 
-[node name="Game" type="Node2D"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_top"]
+size = Vector2(1152, 20)
 
-[node name="GUI" type="CanvasLayer" parent="."]
+[node name="Game" type="Node2D" unique_id=1271910446]
+script = ExtResource("1_game_script")
+cols = 10
 
-[node name="Managers" type="Node2D" parent="."]
+[node name="GUI" type="CanvasLayer" parent="." unique_id=1542919339]
 
-[node name="Player" parent="." instance=ExtResource("1_mhtsl")]
-position = Vector2(576, 568)
+[node name="Walls" type="Node2D" parent="." unique_id=524684664]
 
-[node name="Ball" parent="." instance=ExtResource("2_w51g1")]
-position = Vector2(576, 104)
-
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
+[node name="LeftWall" type="StaticBody2D" parent="Walls" unique_id=75234955]
+position = Vector2(-10, 324)
 collision_layer = 8
 collision_mask = 0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2(584, 592)
-shape = SubResource("RectangleShape2D_w51g1")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/LeftWall" unique_id=1222944256]
+shape = SubResource("RectangleShape2D_walls")
+
+[node name="RightWall" type="StaticBody2D" parent="Walls" unique_id=1831762911]
+position = Vector2(1162, 324)
+collision_layer = 8
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/RightWall" unique_id=89062667]
+shape = SubResource("RectangleShape2D_walls")
+
+[node name="TopWall" type="StaticBody2D" parent="Walls" unique_id=1111786153]
+position = Vector2(576, -10)
+collision_layer = 8
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/TopWall" unique_id=318050378]
+shape = SubResource("RectangleShape2D_top")
+
+[node name="DeathZone" type="Area2D" parent="." unique_id=1644773458]
+position = Vector2(576, 660)
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DeathZone" unique_id=1124505619]
+shape = SubResource("RectangleShape2D_top")
+
+[node name="Player" parent="." unique_id=1512226172 instance=ExtResource("1_mhtsl")]
+position = Vector2(576, 568)
+
+[node name="Ball" parent="." unique_id=1223739505 instance=ExtResource("2_w51g1")]
+position = Vector2(576, 536)
+
+[node name="Blocks" type="Node2D" parent="." unique_id=1003981927]

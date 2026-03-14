@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://daocy3r3aikwv"]
+
+[ext_resource type="Script" uid="uid://ci6xqfh6dwsmn" path="res://Script/power_up.gd" id="1_qlt0i"]
+[ext_resource type="Texture2D" uid="uid://7ccx8rm0d74q" path="res://Assets/Sprites/power_up.png" id="2_w161w"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_02vop"]
+atlas = ExtResource("2_w161w")
+region = Rect2(0, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u4jef"]
+atlas = ExtResource("2_w161w")
+region = Rect2(8, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qra05"]
+atlas = ExtResource("2_w161w")
+region = Rect2(16, 0, 8, 8)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fm81b"]
+
+[node name="PowerUp" type="Area2D" unique_id=927451542]
+script = ExtResource("1_qlt0i")
+type_textures = Dictionary[int, Texture2D]({
+0: SubResource("AtlasTexture_02vop"),
+1: SubResource("AtlasTexture_u4jef"),
+2: SubResource("AtlasTexture_qra05")
+})
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=106743025]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=132236122]
+shape = SubResource("CircleShape2D_fm81b")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

@@ -1,5 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://17r4y7m0acvc"]
+[gd_scene load_steps=4 format=3 uid="uid://17r4y7m0acvc"]
 
+[ext_resource type="Script" uid="uid://d1k3n8m7c6q8b" path="res://Script/block.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://dpoej5ngist0m" path="res://Assets/Sprites/bread.png" id="1_36rfb"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_36rfb"]
@@ -8,6 +9,7 @@ size = Vector2(96, 32)
 [node name="Block" type="StaticBody2D" groups=["Block"]]
 collision_layer = 4
 collision_mask = 2
+script = ExtResource("1_script")
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
