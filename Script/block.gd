@@ -29,6 +29,6 @@ func hit() -> bool:
 	if hardness <= 0:
 		queue_free()
 		return true # Zniszczony
-	else:
-		update_appearance()
-		return false # Jeszcze stoi
+	
+	update_appearance()
+	return false # Jeszcze stoi

@@ -1,22 +1,22 @@
-[gd_scene load_steps=4 format=3 uid="uid://bsq2hwytoujw5"]
+[gd_scene format=3 uid="uid://bsq2hwytoujw5"]
 
 [ext_resource type="Texture2D" uid="uid://dc6tgc88wqabb" path="res://Assets/Sprites/board.png" id="1_kelma"]
 [ext_resource type="Script" uid="uid://xdkhsjg83yka" path="res://Script/player.gd" id="1_y8w33"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_xa75v"]
-radius = 12.0
-height = 100.0
+radius = 16.0
+height = 142.0
 
-[node name="Player" type="CharacterBody2D" groups=["Player"]]
-collision_layer = 1
+[node name="Player" type="CharacterBody2D" unique_id=1293749359 groups=["Player"]]
 collision_mask = 8
 script = ExtResource("1_y8w33")
 metadata/_edit_group_ = true
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=675836584]
 texture_filter = 1
+scale = Vector2(2, 2)
 texture = ExtResource("1_kelma")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1701796320]
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_xa75v")

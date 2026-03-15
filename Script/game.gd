@@ -6,7 +6,9 @@ extends Node2D
 
 var current_level = 0
 var blocks_parent: Node2D
-var noise: FastNoiseLite
+@export var max_lives = 3
+var lives = 3
+var score = 0
 
 @export var rows = 6
 @export var cols = 8
@@ -15,12 +17,11 @@ var noise: FastNoiseLite
 @export var padding = 6
 
 func _ready() -> void:
+	lives = max_lives
+	score = 0
+	GlobalSignals.update_life.emit(lives)
+	GlobalSignals.update_score.emit(score)
 	$DeathZone.body_entered.connect(_on_death_zone_body_entered)
-	
-	# Inicjalizacja szumu do generowania poziomów
-	noise = FastNoiseLite.new()
-	noise.noise_type = FastNoiseLite.TYPE_PERLIN
-	noise.frequency = 0.15 # Odpowiada za "skalę" wzorów
 	
 	# Szukamy kontenera na bloki lub tworzymy go
 	if has_node("Blocks"):
@@ -30,7 +31,7 @@ func _ready() -> void:
 		blocks_parent.name = "Blocks"
 		add_child(blocks_parent)
 	
-	# Usuwamy bloki które mogły być w scenie edytora (nawet jeśli nie są w kontenerze)
+	# Usuwamy bloki które mogły być w scenie edytora
 	var existing_blocks = get_tree().get_nodes_in_group("Block")
 	for b in existing_blocks:
 		b.queue_free()
@@ -46,12 +47,30 @@ func _on_death_zone_body_entered(body: Node) -> void:
 		await get_tree().process_frame
 		var balls = get_tree().get_nodes_in_group("Ball")
 		if balls.size() == 0:
-			# Zamiast przeładowywać scenę, po prostu zresetujmy piłkę
-			spawn_ball()
+			lives -= 1
+			GlobalSignals.update_life.emit(lives)
+			print("Stracono życie! Pozostało: ", lives)
+			
+			if lives <= 0:
+				game_over()
+			else:
+				# Zresetujmy piłkę
+				spawn_ball()
+
+func game_over() -> void:
+	print("KONIEC GRY | FINAŁOWY WYNIK: ", score)
+	GlobalSignals.show_end_screen.emit(score)
+	# Możesz tu dodać UI, na razie restartujemy scenę
+	get_tree().paused = true # Opcjonalnie pauzujemy grę
+	# get_tree().reload_current_scene() # Zakomentowane, by UI mogło wyświetlić wynik
 
 func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("exit"):
 		get_tree().quit()
+	
+	if Input.is_action_just_pressed("reset"):
+		get_tree().paused = false
+		get_tree().reload_current_scene()
 
 func spawn_powerup(pos: Vector2) -> void:
 	var pwrup = powerup_scene.instantiate()
@@ -69,7 +88,7 @@ func spawn_ball(pos: Vector2 = Vector2.ZERO) -> CharacterBody2D:
 		new_ball.global_position = pos
 		new_ball.active = true
 	
-	add_child(new_ball)
+	add_child.call_deferred(new_ball)
 	return new_ball
 
 func multiply_balls() -> void:
@@ -80,36 +99,60 @@ func multiply_balls() -> void:
 			new_ball.global_position = ball.global_position
 			new_ball.direction = Vector2(randf_range(-1, 1), randf_range(-1, 1)).normalized()
 			new_ball.active = true
-			add_child(new_ball)
+			add_child.call_deferred(new_ball)
 
 func generate_level() -> void:
 	current_level += 1
 	
-	# Czyścimy stare bloki (używamy free by natychmiast zwolnić miejsce przed liczeniem)
+	# Czyścimy stare bloki
 	for child in blocks_parent.get_children():
 		child.free()
 	
-	# Zmieniamy parametry szumu dla urozmaicenia
-	noise.seed = randi()
-	
-	# Próg decyduje o gęstości (im niższy, tym więcej bloków)
-	var threshold = -0.15 + (current_level * 0.02) # Trudność: z czasem może być mniej bloków ale trudniej rozmieszczonych
-	threshold = clamp(threshold, -0.4, 0.2)
-	
-	# Parametry siatki (zmniejszone dla bardziej zwartego układu)
-	
-	
-	
 	var total_width = (cols * (block_width + padding)) - padding
-	var start_x = (get_viewport_rect().size.x - total_width) / 2 + block_width/2
+	var start_x = (get_viewport_rect().size.x - total_width) / 2 + block_width/2.0
 	var start_y = 80
+	
+	# Wybieramy kształt na podstawie numeru poziomu (7 rodzajów)
+	var shape_type = (current_level - 1) % 7
 	
 	for r in range(rows):
 		for c in range(cols):
-			# Pobieramy wartość szumu (-1.0 do 1.0)
-			var val = noise.get_noise_2d(c * 10, r * 10)
+			var should_spawn = false
 			
-			if val > threshold: 
+			# Normalizacja rzędu do zakresu 0.0 - 1.0 dla obliczeń matematycznych
+			var nr = float(r) / (rows - 1) if rows > 1 else 0.0
+			
+			match shape_type:
+				0: # X
+					var target_c = nr * (cols - 1)
+					if abs(c - target_c) < 1.1 or abs(c - (cols - 1 - target_c)) < 1.1:
+						should_spawn = true
+				1: # V
+					var target_c = nr * (cols - 1) / 2.0
+					if abs(c - target_c) < 1.1 or abs(c - (cols - 1 - target_c)) < 1.1:
+						should_spawn = true
+				2: # W
+					var half_cols = cols / 2.0
+					var c_in_half = c % int(half_cols)
+					var target_c = nr * (half_cols - 1) / 2.0
+					if abs(c_in_half - target_c) < 1.1 \
+							or abs(c_in_half - (half_cols - 1 - target_c)) < 1.1:
+						should_spawn = true
+				3: # Kwadrat pełen
+					should_spawn = true
+				4: # Trójkąt (skierowany w dół)
+					var margin = int(round(nr * (cols - 1) / 2.0))
+					if c >= margin and c <= (cols - 1 - margin):
+						should_spawn = true
+				5: # Kwadrat pusty (ramka)
+					if r < 2 or r >= rows - 2 or c < 2 or c >= cols - 2:
+						should_spawn = true
+				6: # Dwa kwadraty po bokach (4x4 na krawędziach dla lepszego efektu)
+					if (c < 4 or c >= cols - 4) and r < 4:
+						should_spawn = true
+
+			
+			if should_spawn:
 				var block = block_scene.instantiate()
 				block.position = Vector2(
 					start_x + c * (block_width + padding), 
@@ -117,21 +160,14 @@ func generate_level() -> void:
 				)
 				blocks_parent.add_child(block)
 				
-				# Przypisujemy twardość (1-3)
-				# Na wyższych poziomach szansa na twardsze bloki rośnie
-				var rand_h = randf()
-				if rand_h > 0.8: # 20% szans na twardy
+				# Przypisujemy twardość (zwiększona szansa na trudniejsze bloki z poziomem)
+				var hardness_chance = randf()
+				if hardness_chance > 0.8:
 					block.hardness = 3
-				elif rand_h > 0.5: # 30% szans na średni
+				elif hardness_chance > 0.5:
 					block.hardness = 2
 				else:
 					block.hardness = 1
-	
-	# Failsafe: jeśli szum wygenerował pusty poziom
-	await get_tree().process_frame
-	if get_tree().get_nodes_in_group("Block").size() == 0:
-		generate_level()
-		return
 	
 	reset_balls()
 
@@ -147,12 +183,18 @@ func reset_balls() -> void:
 			ball.active = false
 			ball.global_position = player.global_position + Vector2(0, -32)
 
-func on_block_destroyed() -> void:
+func on_block_destroyed(points: int = 100) -> void:
+	score += points
+	GlobalSignals.update_score.emit(score)
+	print("PUNKTY: ", score)
+	
 	# Czekamy na koniec klatki, aż silnik przetworzy queue_free()
 	await get_tree().process_frame
 	
 	# Filtrujemy tylko te bloki, które nie są właśnie usuwane
-	var blocks = get_tree().get_nodes_in_group("Block").filter(func(node): return !node.is_queued_for_deletion())
+	var blocks = get_tree().get_nodes_in_group("Block").filter(
+			func(node): return !node.is_queued_for_deletion()
+			)
 	
 	if blocks.size() == 0:
 		# Nowy poziom generujemy po chwili

@@ -1,0 +1,10 @@
+[gd_resource type="Theme" format=3 uid="uid://dlvf111r0xv11"]
+
+[ext_resource type="FontFile" uid="uid://7gsamdy6hhyf" path="res://Assets/Fonts/ThaleahFat.ttf" id="1_1thlo"]
+
+[resource]
+HBoxContainer/constants/separation = 8
+Label/colors/font_outline_color = Color(0, 0, 0, 1)
+Label/constants/outline_size = 8
+Label/font_sizes/font_size = 32
+Label/fonts/font = ExtResource("1_1thlo")

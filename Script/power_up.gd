@@ -31,6 +31,7 @@ func _physics_process(delta: float) -> void:
 
 func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Player"):
+		GlobalSignals.powerup_collected.emit()
 		apply_powerup()
 		queue_free()
 
@@ -38,7 +39,9 @@ func apply_powerup() -> void:
 	var game = get_tree().current_scene
 	match type:
 		Type.ADD_BALL:
-			game.spawn_ball()
+			var player = get_tree().get_first_node_in_group("Player")
+			if player:
+				game.spawn_ball(player.global_position + Vector2(0, -32))
 		Type.MULTIPLY:
 			game.multiply_balls()
 		Type.EXTEND:

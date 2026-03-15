@@ -1,0 +1,101 @@
+[gd_scene format=3 uid="uid://d4mok7xq5e75o"]
+
+[ext_resource type="Theme" uid="uid://dlvf111r0xv11" path="res://Assets/Main.tres" id="1_4p6jq"]
+[ext_resource type="Script" uid="uid://tl8c3vffnd1a" path="res://Script/gui.gd" id="1_hquae"]
+[ext_resource type="Texture2D" uid="uid://u7673qoqw4y4" path="res://Assets/Sprites/duck.png" id="2_4p6jq"]
+
+[node name="Gui" type="Control" unique_id=2035404353 node_paths=PackedStringArray("life_labe", "score_labe", "info_panel", "start_info", "end_info")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_4p6jq")
+script = ExtResource("1_hquae")
+life_labe = NodePath("VBoxContainer/Score/Life/LifeCount")
+score_labe = NodePath("VBoxContainer/Score/Score/MarginContainer/ScoreCount")
+info_panel = NodePath("VBoxContainer/InfoPanel")
+start_info = NodePath("VBoxContainer/InfoPanel/StartInfo")
+end_info = NodePath("VBoxContainer/InfoPanel/EndInfo")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=706654557]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Score" type="NinePatchRect" parent="VBoxContainer" unique_id=259395256]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="Life" type="HBoxContainer" parent="VBoxContainer/Score" unique_id=1346738570]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 50.0
+theme = ExtResource("1_4p6jq")
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Score/Life" unique_id=1859082469]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="LifeImage" type="TextureRect" parent="VBoxContainer/Score/Life/MarginContainer" unique_id=570380338]
+texture_filter = 1
+layout_mode = 2
+texture = ExtResource("2_4p6jq")
+expand_mode = 2
+stretch_mode = 4
+
+[node name="LifeCount" type="Label" parent="VBoxContainer/Score/Life" unique_id=344793849]
+layout_mode = 2
+text = " 0"
+
+[node name="Score" type="HBoxContainer" parent="VBoxContainer/Score" unique_id=773405131]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 0
+offset_left = 1738.0
+offset_right = 1920.0
+offset_bottom = 50.0
+size_flags_horizontal = 8
+theme = ExtResource("1_4p6jq")
+
+[node name="ScoreLabe" type="Label" parent="VBoxContainer/Score/Score" unique_id=279096532]
+texture_filter = 1
+layout_mode = 2
+text = "Score: "
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Score/Score" unique_id=1567435851]
+layout_mode = 2
+theme_override_constants/margin_right = 12
+
+[node name="ScoreCount" type="Label" parent="VBoxContainer/Score/Score/MarginContainer" unique_id=1771879643]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "0000"
+horizontal_alignment = 1
+
+[node name="InfoPanel" type="NinePatchRect" parent="VBoxContainer" unique_id=424829013]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="StartInfo" type="Label" parent="VBoxContainer/InfoPanel" unique_id=1607995289]
+layout_mode = 0
+offset_top = 483.0
+offset_right = 1920.0
+offset_bottom = 542.0
+theme_override_font_sizes/font_size = 64
+text = "Press X to start game"
+horizontal_alignment = 1
+
+[node name="EndInfo" type="Label" parent="VBoxContainer/InfoPanel" unique_id=684723031]
+layout_mode = 0
+offset_top = 483.0
+offset_right = 1920.0
+offset_bottom = 542.0
+theme_override_font_sizes/font_size = 64
+horizontal_alignment = 1

@@ -1,20 +1,20 @@
-[gd_scene load_steps=4 format=3 uid="uid://17r4y7m0acvc"]
+[gd_scene format=3 uid="uid://17r4y7m0acvc"]
 
-[ext_resource type="Script" uid="uid://d1k3n8m7c6q8b" path="res://Script/block.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://dpoej5ngist0m" path="res://Assets/Sprites/bread.png" id="1_36rfb"]
+[ext_resource type="Script" uid="uid://gmhp3noun61y" path="res://Script/block.gd" id="1_script"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_36rfb"]
 size = Vector2(96, 32)
 
-[node name="Block" type="StaticBody2D" groups=["Block"]]
+[node name="Block" type="StaticBody2D" unique_id=312581348 groups=["Block"]]
 collision_layer = 4
 collision_mask = 2
 script = ExtResource("1_script")
 metadata/_edit_group_ = true
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1504248390]
 texture_filter = 1
 texture = ExtResource("1_36rfb")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=323951006]
 shape = SubResource("RectangleShape2D_36rfb")
