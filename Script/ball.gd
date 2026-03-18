@@ -48,7 +48,10 @@ func _physics_process(delta: float) -> void:
 				if get_tree().current_scene.has_method("on_block_destroyed"):
 					get_tree().current_scene.on_block_destroyed()
 		elif collider.is_in_group("Player"):
-			# Możemy dodać wpływ ruchu paletki na kierunek piłki
-			var paddle_width = 100.0 * collider.scale.x # Dynamiczna szerokość
-			var hit_pos = (global_position.x - collider.global_position.x) / (paddle_width / 2)
-			direction = Vector2(hit_pos, -1).normalized()
+			# Sprawdź czy uderzyliśmy w górną krawędź paletki (normalna Y < 0 w Godot 2D to góra)
+			if collision.get_normal().y < 0:
+				# Możemy dodać wpływ ruchu paletki na kierunek piłki
+				var paddle_width = 100.0 * collider.scale.x # Dynamiczna szerokość
+				var hit_pos = (global_position.x - collider.global_position.x) / (paddle_width / 2)
+				direction = Vector2(hit_pos, -1).normalized()
+			# Jeśli uderzyliśmy w bok lub dół, zostawiamy domyślne odbicie (bounce) wykonane wyżej

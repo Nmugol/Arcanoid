@@ -2,6 +2,7 @@ extends Node
 
 @export_group("Music")
 @export var music_track: AudioStream
+@export_range(0.0, 1.0) var music_volume: float = 0.5
 
 @export_group("SFX")
 @export var block_hit_sfx: AudioStream
@@ -12,15 +13,20 @@ extends Node
 var music_player: AudioStreamPlayer
 var sfx_players: Array[AudioStreamPlayer] = []
 var max_sfx_players = 8
+var last_lives = -1
 var _destroyed_sound_played_this_frame = false
 var _powerup_sound_played_this_frame = false
 
 func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS
 	# Setup music player
 	music_player = AudioStreamPlayer.new()
+	music_player.process_mode = Node.PROCESS_MODE_ALWAYS
 	add_child(music_player)
 	music_player.bus = "Music"
+	music_player.volume_db = linear_to_db(music_volume)
 	music_player.stream = music_track
+	music_player.finished.connect(music_player.play)
 	if music_track:
 		music_player.play()
 	
@@ -29,12 +35,14 @@ func _ready() -> void:
 		var p = AudioStreamPlayer.new()
 		add_child(p)
 		p.bus = "SFX"
+		p.process_mode = Node.PROCESS_MODE_ALWAYS
 		sfx_players.append(p)
 	
 	# Connect signals
 	GlobalSignals.block_hit.connect(_on_block_hit)
 	GlobalSignals.powerup_collected.connect(_on_powerup_collected)
 	GlobalSignals.update_life.connect(_on_update_life)
+	GlobalSignals.show_end_screen.connect(_on_game_over)
 
 func play_sfx(stream: AudioStream) -> void:
 	if not stream:
@@ -45,6 +53,11 @@ func play_sfx(stream: AudioStream) -> void:
 			p.stream = stream
 			p.play()
 			return
+
+func _on_game_over(_score: int) -> void:
+	if music_player:
+		music_player.stop()
+	play_sfx(failure_sfx)
 
 func _on_block_hit(destroyed: bool) -> void:
 	if destroyed:
@@ -64,12 +77,13 @@ func _on_powerup_collected() -> void:
 		get_tree().process_frame.connect(func(): _powerup_sound_played_this_frame = false, CONNECT_ONE_SHOT)
 
 func _on_update_life(lives: int) -> void:
-	var last_lives = -1
 	if last_lives == -1:
 		last_lives = lives
 		return
 	
 	if lives < last_lives:
-		play_sfx(failure_sfx)
+		# To jest dźwięk przy stracie życia, opcjonalnie inny niż porażka końcowa
+		# ale użytkownik prosił o dźwięk przy porażce (game over)
+		pass
 	
 	last_lives = lives

@@ -1,20 +1,22 @@
-[gd_scene load_steps=4 format=3 uid="uid://dfvcdiv0lcd2y"]
+[gd_scene format=3 uid="uid://dfvcdiv0lcd2y"]
 
-[ext_resource type="Script" path="res://Script/ball.gd" id="1_ball_script"]
+[ext_resource type="Script" uid="uid://dmbx5tq707lbx" path="res://Script/ball.gd" id="1_ball_script"]
 [ext_resource type="Texture2D" uid="uid://u7673qoqw4y4" path="res://Assets/Sprites/duck.png" id="1_c2f4g"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_0wd17"]
-radius = 8.0
+radius = 12.0415945
 
-[node name="Ball" type="CharacterBody2D" groups=["Ball"]]
+[node name="Ball" type="CharacterBody2D" unique_id=1424947141 groups=["Ball"]]
 collision_layer = 2
 collision_mask = 13
 script = ExtResource("1_ball_script")
+speed = 600.0
 metadata/_edit_group_ = true
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=413650064]
 texture_filter = 1
+scale = Vector2(1.5, 1.5)
 texture = ExtResource("1_c2f4g")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=359818396]
 shape = SubResource("CircleShape2D_0wd17")

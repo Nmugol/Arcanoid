@@ -32,8 +32,9 @@ padding = 0
 [node name="Audio" type="Node" parent="." unique_id=423027869]
 script = ExtResource("2_8f6ah")
 music_track = ExtResource("3_c6b8m")
-block_hit_sfx = ExtResource("3_twwsd")
-block_destroyed_sfx = ExtResource("4_c6b8m")
+music_volume = 0.204
+block_hit_sfx = ExtResource("4_c6b8m")
+block_destroyed_sfx = ExtResource("3_twwsd")
 powerup_collected_sfx = ExtResource("5_0ka5k")
 failure_sfx = ExtResource("6_ha7wd")
 

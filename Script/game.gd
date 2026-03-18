@@ -17,6 +17,7 @@ var score = 0
 @export var padding = 6
 
 func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS
 	lives = max_lives
 	score = 0
 	GlobalSignals.update_life.emit(lives)

@@ -16,7 +16,7 @@ atlas = ExtResource("2_w161w")
 region = Rect2(16, 0, 8, 8)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_fm81b"]
-radius = 16.0
+radius = 24.0
 
 [node name="PowerUp" type="Area2D" unique_id=927451542]
 script = ExtResource("1_qlt0i")
@@ -27,7 +27,7 @@ type_textures = Dictionary[int, Texture2D]({
 })
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=106743025]
-scale = Vector2(1.5, 1.5)
+scale = Vector2(2, 2)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=132236122]
 shape = SubResource("CircleShape2D_fm81b")

@@ -34,7 +34,7 @@ func _on_show_end_screen(s: int) -> void:
 	info_panel.visible = true
 	start_info.visible = false
 	end_info.visible = true
-	end_info.text = "GAME OVER\nFINAL SCORE: " + str(s) + "\nPRESS 'R' TO RESET"
+	end_info.text = "GAME OVER\nFINAL SCORE: " + str(s) + "\nPress 1 to reset" + "\nPress Y to exit"
 
 func _on_hide_info_screen() -> void:
 	info_panel.visible = false
